@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const google = new mongoose.Schema({
     username:String,
-    googleId:String
+    googleID:String
 },
 { timeseries: true, collection: "Api_auth" }
 

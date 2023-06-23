@@ -2,6 +2,7 @@ const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const cookieSession = require('cookie-session');
 const logger = require("morgan");
 const passport = require("passport")
 const mongoose = require("mongoose");
@@ -9,12 +10,18 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const port = 3000;
 const app = express();
+require("dotenv").config();
+const tokenSecret = process.env.TOKEN_SECRET;
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-// app.use(passport.initialize())
-// app.use(passport.authenticate())
+app.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: tokenSecret
+}));
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
